@@ -49,8 +49,8 @@ public class PrepareShotCommand extends Command {
         addRequirements(shooter, hood);
     }
 
-    public boolean isReadyToShoot() {
-        return shooter.isVelocityWithinTolerance() && hood.isPositionWithinTolerance();
+    public boolean isReadyToShoot(double targetRPM) {
+        return shooter.isVelocityWithinTolerance(targetRPM) && hood.isPositionWithinTolerance();
     }
 
     private Distance getDistanceToHub() {

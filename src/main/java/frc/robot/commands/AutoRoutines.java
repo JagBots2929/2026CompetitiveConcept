@@ -90,13 +90,13 @@ public final class AutoRoutines {
         depotToShootingPose.active().whileTrue(limelight.idle());
         depotToShootingPose.atTime(0.5).onTrue(
             Commands.parallel(
-                shooter.spinUpCommand(2600),
+                shooter.spinUpCommand(2600), // using this as the setpoint for shooter commands
                 hood.positionCommand(0.32)
             )
         );
         depotToShootingPose.done().onTrue(
             Commands.sequence(
-                subsystemCommands.aimAndShoot()
+                subsystemCommands.aimAndShoot(2600)
                     .withTimeout(5)
             )
         );
