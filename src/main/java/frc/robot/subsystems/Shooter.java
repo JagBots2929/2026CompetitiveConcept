@@ -35,11 +35,9 @@ public class Shooter extends SubsystemBase {
         rightMotor = new SparkFlex(Ports.kShooterRight, MotorType.kBrushless);
         motors = List.of(leftMotor, rightMotor);
 
-        leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        rightMotor.configure(rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         // configureMotor(leftMotor, InvertedValue.CounterClockwise_Positive);
         // configureMotor(rightMotor, InvertedValue.Clockwise_Positive);
+        configureMotor();
 
         SmartDashboard.putData(this);
     }
@@ -70,7 +68,7 @@ public class Shooter extends SubsystemBase {
                     .withKV(12.0 / KrakenX60.kFreeSpeed.in(RotationsPerSecond)) // 12 volts when requesting max RPS
             ); */
 
-        leftConfig.inverted(true);
+        leftConfig.inverted(false);
         rightConfig.inverted(false);
 
         leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
