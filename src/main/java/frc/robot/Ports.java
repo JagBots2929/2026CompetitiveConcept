@@ -13,11 +13,11 @@ public final class Ports {
     public static final int kFloor = 12;
     public static final int kFeeder = 13;
     public static final int kShooterLeft = 14;
-    public static final int kShooterMiddle = 15;
+    // TODO this was removed for Bonney Lake competition // public static final int kShooterMiddle = 15;
     public static final int kShooterRight = 16;
-    public static final int kHanger = 18;
+    // TODO this doesn't exist for bonney lake // public static final int kHanger = 18;
 
-    // PWM Ports
-    public static final int kHoodLeftServo = 3;
-    public static final int kHoodRightServo = 4;
+    // PWM Ports // TODO don't have these yet for Bonney Lake
+    // public static final int kHoodLeftServo = 3;
+    // public static final int kHoodRightServo = 4;
 }

@@ -25,18 +25,19 @@ public class Hood extends SubsystemBase {
     private static final double kMaxPosition = 0.77;
     private static final double kPositionTolerance = 0.01;
 
-    private final Servo leftServo;
-    private final Servo rightServo;
+    // TODO for bonney lake these do not exist
+    private final Servo leftServo = null;
+    private final Servo rightServo = null;
 
     private double currentPosition = 0.5;
     private double targetPosition = 0.5;
     private Time lastUpdateTime = Seconds.of(0);
 
     public Hood() {
-        leftServo = new Servo(Ports.kHoodLeftServo);
-        rightServo = new Servo(Ports.kHoodRightServo);
-        leftServo.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
-        rightServo.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
+        //leftServo = new Servo(Ports.kHoodLeftServo);
+        //rightServo = new Servo(Ports.kHoodRightServo);
+        //leftServo.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
+        //rightServo.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
         setPosition(currentPosition);
         SmartDashboard.putData(this);
     }
