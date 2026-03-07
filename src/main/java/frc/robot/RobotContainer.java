@@ -21,8 +21,6 @@ import frc.robot.commands.ManualDriveCommand;
 import frc.robot.commands.SubsystemCommands;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Floor;
-import frc.robot.subsystems.Hanger;
-import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.HoodStub;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
@@ -43,7 +41,6 @@ public class RobotContainer {
     private final Feeder feeder = new Feeder();
     private final Shooter shooter = new Shooter();
     private final HoodStub hood = new HoodStub();
-    private final Hanger hanger = new Hanger();
     private final Limelight limelight = new Limelight("limelight");
 
     private final SwerveTelemetry swerveTelemetry = new SwerveTelemetry(Driving.kMaxSpeed.in(MetersPerSecond));
@@ -57,7 +54,6 @@ public class RobotContainer {
         feeder,
         shooter,
         hood,
-        hanger,
         limelight
     );
     private final SubsystemCommands subsystemCommands = new SubsystemCommands(
@@ -67,7 +63,6 @@ public class RobotContainer {
         feeder,
         shooter,
         hood,
-        hanger,
         () -> -driver.getLeftY(),
         () -> -driver.getLeftX()
     );
@@ -93,16 +88,12 @@ public class RobotContainer {
         limelight.setDefaultCommand(updateVisionCommand());
 
         RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop())
-            .onTrue(intake.homingCommand())
-            .onTrue(hanger.homingCommand());
+            .onTrue(intake.homingCommand());
 
         driver.rightTrigger().whileTrue(subsystemCommands.aimAndShoot());
         driver.rightBumper().whileTrue(subsystemCommands.shootManually());
         driver.leftTrigger().whileTrue(intake.intakeCommand());
         driver.leftBumper().onTrue(intake.runOnce(() -> intake.set(Intake.Position.STOWED)));
-
-        driver.povUp().onTrue(hanger.positionCommand(Hanger.Position.HANGING));
-        driver.povDown().onTrue(hanger.positionCommand(Hanger.Position.HUNG));
     }
 
     private void configureManualDriveBindings() {
