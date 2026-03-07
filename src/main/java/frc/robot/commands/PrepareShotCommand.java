@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Landmarks;
 import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.HoodStub;
 import frc.robot.subsystems.Shooter;
 
 public class PrepareShotCommand extends Command {
@@ -38,10 +39,10 @@ public class PrepareShotCommand extends Command {
     }
 
     private final Shooter shooter;
-    private final Hood hood;
+    private final HoodStub hood;
     private final Supplier<Pose2d> robotPoseSupplier;
 
-    public PrepareShotCommand(Shooter shooter, Hood hood, Supplier<Pose2d> robotPoseSupplier) {
+    public PrepareShotCommand(Shooter shooter, HoodStub hood, Supplier<Pose2d> robotPoseSupplier) {
         this.shooter = shooter;
         this.hood = hood;
         this.robotPoseSupplier = robotPoseSupplier;

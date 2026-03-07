@@ -8,6 +8,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Floor;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.HoodStub;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
@@ -18,7 +19,7 @@ public final class SubsystemCommands {
     private final Floor floor;
     private final Feeder feeder;
     private final Shooter shooter;
-    private final Hood hood;
+    private final HoodStub hood;
     private final Hanger hanger;
 
     private final DoubleSupplier forwardInput;
@@ -30,7 +31,7 @@ public final class SubsystemCommands {
         Floor floor,
         Feeder feeder,
         Shooter shooter,
-        Hood hood,
+        HoodStub hood,
         Hanger hanger,
         DoubleSupplier forwardInput,
         DoubleSupplier leftInput
@@ -53,7 +54,7 @@ public final class SubsystemCommands {
         Floor floor,
         Feeder feeder,
         Shooter shooter,
-        Hood hood,
+        HoodStub hood,
         Hanger hanger
     ) {
         this(

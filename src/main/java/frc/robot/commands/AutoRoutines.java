@@ -20,6 +20,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Floor;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.HoodStub;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
@@ -31,7 +32,7 @@ public final class AutoRoutines {
     private final Floor floor;
     private final Feeder feeder;
     private final Shooter shooter;
-    private final Hood hood;
+    private final HoodStub hood;
     private final Hanger hanger;
     private final Limelight limelight;
 
@@ -46,7 +47,7 @@ public final class AutoRoutines {
         Floor floor,
         Feeder feeder,
         Shooter shooter,
-        Hood hood,
+        HoodStub hood,
         Hanger hanger,
         Limelight limelight
     ) {

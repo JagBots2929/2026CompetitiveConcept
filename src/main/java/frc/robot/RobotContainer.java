@@ -23,6 +23,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Floor;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.HoodStub;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
@@ -41,7 +42,7 @@ public class RobotContainer {
     private final Floor floor = new Floor();
     private final Feeder feeder = new Feeder();
     private final Shooter shooter = new Shooter();
-    private final Hood hood = new Hood();
+    private final HoodStub hood = new HoodStub();
     private final Hanger hanger = new Hanger();
     private final Limelight limelight = new Limelight("limelight");
 
