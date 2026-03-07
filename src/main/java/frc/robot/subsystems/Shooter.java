@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.KrakenX60;
 import frc.robot.Ports;
+import static edu.wpi.first.units.Units.RPM;
 
 public class Shooter extends SubsystemBase {
     private static final double kVelocityTolerance = 100;
@@ -81,7 +83,7 @@ public class Shooter extends SubsystemBase {
                 velocityRequest
                     .withVelocity(RPM.of(rpm))
             ); */
-            motor.set(rpm);
+            motor.set(rpm / KrakenX60.kFreeSpeed.in(RPM));
         }
     }
 
@@ -91,7 +93,7 @@ public class Shooter extends SubsystemBase {
                 voltageRequest
                     .withOutput(Volts.of(percentOutput * 12.0))
             ); */
-            motor.setVoltage(percentOutput);
+            motor.set(percentOutput);
         }
     }
 
