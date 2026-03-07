@@ -63,6 +63,8 @@ public final class AutoRoutines {
 
     public void configure() {
         autoChooser.addRoutine("Outpost and Depot", this::outpostAndDepotRoutine);
+        autoChooser.addRoutine("None", () -> autoFactory.newRoutine("None"));
+        autoChooser.addRoutine("Shoot In Place", this::shootInPlace);
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
     }
@@ -72,7 +74,6 @@ public final class AutoRoutines {
         final AutoTrajectory startToOutpost = OutpostAndDepotTrajectory$0.asAutoTraj(routine);
         final AutoTrajectory outpostToDepot = OutpostAndDepotTrajectory$1.asAutoTraj(routine);
         final AutoTrajectory depotToShootingPose = OutpostAndDepotTrajectory$2.asAutoTraj(routine);
-        final AutoTrajectory shootingPoseToTower = OutpostAndDepotTrajectory$3.asAutoTraj(routine);
 
         routine.active().onTrue(
             Commands.sequence(
@@ -96,12 +97,17 @@ public final class AutoRoutines {
         depotToShootingPose.done().onTrue(
             Commands.sequence(
                 subsystemCommands.aimAndShoot()
-                    .withTimeout(5),
-                shootingPoseToTower.cmd()
+                    .withTimeout(5)
             )
         );
 
-        shootingPoseToTower.active().whileTrue(limelight.idle());
+        return routine;
+    }
+
+    private AutoRoutine shootInPlace() {
+        final AutoRoutine routine = autoFactory.newRoutine("Shoot In Place");
+
+        Commands.runOnce(() -> subsystemCommands.aimAndShoot().withTimeout(5), shooter, floor, feeder);
 
         return routine;
     }
