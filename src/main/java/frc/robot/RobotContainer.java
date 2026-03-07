@@ -90,6 +90,7 @@ public class RobotContainer {
         RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop())
             .onTrue(intake.homingCommand());
 
+        // COMPETITION can tune aimAndShoot value
         driver.rightTrigger().whileTrue(subsystemCommands.aimAndShoot(2600));
         driver.rightBumper().whileTrue(subsystemCommands.shootManually());
         driver.leftTrigger().whileTrue(intake.intakeCommand());
