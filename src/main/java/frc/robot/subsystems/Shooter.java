@@ -30,7 +30,7 @@ import frc.robot.Ports;
 public class Shooter extends SubsystemBase {
     private static final AngularVelocity kVelocityTolerance = RPM.of(100);
 
-    private final TalonFX leftMotor, middleMotor, rightMotor;
+    private final TalonFX leftMotor, rightMotor;
     private final List<TalonFX> motors;
     private final VelocityVoltage velocityRequest = new VelocityVoltage(0).withSlot(0);
     private final VoltageOut voltageRequest = new VoltageOut(0);
@@ -39,12 +39,10 @@ public class Shooter extends SubsystemBase {
 
     public Shooter() {
         leftMotor = new TalonFX(Ports.kShooterLeft, Ports.kRoboRioCANBus);
-        middleMotor = new TalonFX(Ports.kShooterMiddle, Ports.kRoboRioCANBus);
         rightMotor = new TalonFX(Ports.kShooterRight, Ports.kRoboRioCANBus);
-        motors = List.of(leftMotor, middleMotor, rightMotor);
+        motors = List.of(leftMotor, rightMotor);
 
         configureMotor(leftMotor, InvertedValue.CounterClockwise_Positive);
-        configureMotor(middleMotor, InvertedValue.Clockwise_Positive);
         configureMotor(rightMotor, InvertedValue.Clockwise_Positive);
 
         SmartDashboard.putData(this);
@@ -128,7 +126,6 @@ public class Shooter extends SubsystemBase {
     @Override
     public void initSendable(SendableBuilder builder) {
         initSendable(builder, leftMotor, "Left");
-        initSendable(builder, middleMotor, "Middle");
         initSendable(builder, rightMotor, "Right");
         builder.addStringProperty("Command", () -> getCurrentCommand() != null ? getCurrentCommand().getName() : "null", null);
         builder.addDoubleProperty("Dashboard RPM", () -> dashboardTargetRPM, value -> dashboardTargetRPM = value);
