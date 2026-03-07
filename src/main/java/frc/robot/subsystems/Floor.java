@@ -1,28 +1,19 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Volts;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkFlexConfig;
+// import com.revrobotics.spark.SparkFlex;
+// import com.revrobotics.spark.SparkBase.PersistMode;
+// import com.revrobotics.spark.SparkBase.ResetMode;
+// import com.revrobotics.spark.SparkLowLevel.MotorType;
+// import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Ports;
 
 public class Floor extends SubsystemBase {
     public enum Speed {
@@ -40,50 +31,25 @@ public class Floor extends SubsystemBase {
         }
     }
 
-    private final SparkFlex motor;
-    private final SparkFlexConfig config = new SparkFlexConfig();
-    private final VoltageOut voltageRequest = new VoltageOut(0);
+    // private final SparkFlex motor;
+    // private final SparkFlexConfig config = new SparkFlexConfig();
 
     public Floor() {
-        motor = new SparkFlex(Ports.kFloor, MotorType.kBrushless);
-
-        /* final TalonFXConfiguration config = new TalonFXConfiguration()
-            .withMotorOutput(
-                new MotorOutputConfigs()
-                    .withInverted(InvertedValue.Clockwise_Positive)
-                    .withNeutralMode(NeutralModeValue.Brake)
-            )
-            .withCurrentLimits(
-                new CurrentLimitsConfigs()
-                    .withStatorCurrentLimit(Amps.of(120))
-                    .withStatorCurrentLimitEnable(true)
-                    .withSupplyCurrentLimit(Amps.of(30))
-                    .withSupplyCurrentLimitEnable(true)
-            );
-
-        motor.getConfigurator().apply(config); */ 
-
-        motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // motor = new SparkFlex(Ports.kFloor, MotorType.kBrushless);
+        // motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         SmartDashboard.putData(this);
     }
 
     public void set(Speed speed) {
-        /* motor.setControl(
-            voltageRequest
-                .withOutput(speed.voltage())
-        ); */
-        motor.set(speed.percentOutput);
+        // motor.set(speed.percentOutput);
     }
 
     public Command feedCommand() {
-        return startEnd(() -> set(Speed.FEED), () -> set(Speed.STOP));
+        return Commands.none();
     }
 
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addStringProperty("Command", () -> getCurrentCommand() != null ? getCurrentCommand().getName() : "null", null);
-        builder.addDoubleProperty("RPM", () -> motor.getEncoder().getVelocity(), null);
-        builder.addDoubleProperty("Stator Current", () -> motor.getOutputCurrent(), null);
-        builder.addDoubleProperty("Supply Current", () -> motor.getAppliedOutput(), null);
     }
 }
