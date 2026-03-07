@@ -14,7 +14,6 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Landmarks;
-import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.HoodStub;
 import frc.robot.subsystems.Shooter;
 
