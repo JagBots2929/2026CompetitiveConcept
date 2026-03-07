@@ -53,8 +53,8 @@ public class Shooter extends SubsystemBase {
         leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightMotor.configure(rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        // configureMotor(leftMotor, InvertedValue.CounterClockwise_Positive);
-        // configureMotor(rightMotor, InvertedValue.Clockwise_Positive);
+        configureMotor();
+        configureMotor();
 
         SmartDashboard.putData(this);
     }
@@ -108,7 +108,7 @@ public class Shooter extends SubsystemBase {
                 voltageRequest
                     .withOutput(Volts.of(percentOutput * 12.0))
             ); */
-            motor.setVoltage(percentOutput);
+            motor.set(percentOutput);
         }
     }
 
