@@ -107,7 +107,7 @@ public final class AutoRoutines {
     private AutoRoutine shootInPlace() {
         final AutoRoutine routine = autoFactory.newRoutine("Shoot In Place");
 
-        Commands.runOnce(() -> subsystemCommands.aimAndShoot().withTimeout(5), shooter, floor, feeder);
+        Commands.runOnce(() -> subsystemCommands.aimAndShoot(2600).withTimeout(5), shooter, floor, feeder);
 
         return routine;
     }
