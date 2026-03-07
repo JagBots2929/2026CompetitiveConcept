@@ -37,7 +37,8 @@ public class ManualDriveCommand extends Command {
 
     private final Swerve swerve;
     private final DriveInputSmoother inputSmoother;
-    private final SwerveRequest.Idle idleRequest = new SwerveRequest.Idle();
+    private final SwerveRequest.PointWheelsAt idleRequest = new SwerveRequest.PointWheelsAt()
+        .withModuleDirection(Rotation2d.kZero);
 
     private final SwerveRequest.FieldCentric fieldCentricRequest = new SwerveRequest.FieldCentric()
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
