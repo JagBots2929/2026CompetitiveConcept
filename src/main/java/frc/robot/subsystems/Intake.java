@@ -20,6 +20,7 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -122,6 +123,9 @@ public class Intake extends SubsystemBase {
                     .withKV(12.0 / kMaxPivotSpeed.in(RotationsPerSecond)) // 12 volts when requesting max RPS
             ); */
 
+        pivotConfig.encoder.positionConversionFactor(360.0 / kPivotReduction);
+        pivotConfig.closedLoop.p(0.1);
+
         rollerMotor.configure(rollerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         pivotMotor.configure(pivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
@@ -162,12 +166,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void set(Position position) {
-        // pivotMotor.setControl(
-        //     pivotMotionMagicRequest
-        //         .withPosition(position.angle())
-        // );
-
-        pivotMotor.getEncoder().setPosition(position.degrees);
+        pivotMotor.getClosedLoopController().setReference(position.degrees, ControlType.kPosition);
     }
 
     public void set(Speed speed) {
@@ -211,7 +210,7 @@ public class Intake extends SubsystemBase {
             runOnce(() -> setPivotPercentOutput(0.1)),
             Commands.waitUntil(() -> pivotMotor.getOutputCurrent() > 6),
             runOnce(() -> {
-                pivotMotor.set(Position.HOMED.degrees);
+                pivotMotor.getEncoder().setPosition(Position.HOMED.degrees);
                 isHomed = true;
                 set(Position.STOWED);
             })

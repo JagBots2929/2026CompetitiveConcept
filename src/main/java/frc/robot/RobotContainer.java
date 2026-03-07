@@ -95,6 +95,7 @@ public class RobotContainer {
         driver.rightBumper().whileTrue(subsystemCommands.shootManually());
         driver.leftTrigger().whileTrue(intake.intakeCommand());
         driver.leftBumper().onTrue(intake.runOnce(() -> intake.set(Intake.Position.STOWED)));
+        driver.a().onTrue(intake.runOnce(() -> intake.set(Intake.Position.INTAKE)));
     }
 
     private void configureManualDriveBindings() {

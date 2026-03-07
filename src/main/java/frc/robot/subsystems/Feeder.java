@@ -84,7 +84,7 @@ public class Feeder extends SubsystemBase {
         //     velocityRequest
         //         .withVelocity(speed.angularVelocity())
         // );
-        motor.set(speed.rpm);
+        motor.set(speed.rpm / KrakenX60.kFreeSpeed.in(RPM));
     }
 
     public void setPercentOutput(double percentOutput) {
