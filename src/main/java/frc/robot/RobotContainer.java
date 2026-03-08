@@ -92,20 +92,20 @@ public class RobotContainer {
         //     .onTrue(intake.homingCommand());
 
         // COMPETITION can tune aimAndShoot value
-        // driver.rightTrigger().whileTrue(subsystemCommands.aimAndShoot(2600));
-        // driver.rightBumper().whileTrue(subsystemCommands.shootManually());
-        // driver.leftTrigger().whileTrue(intake.intakeCommand());
+        driver.rightTrigger().whileTrue(subsystemCommands.aimAndShoot(2600));
+        driver.rightBumper().whileTrue(subsystemCommands.shootManually());
+        driver.leftTrigger().whileTrue(intake.intakeCommand());
         // PENDING TUNING
-        //driver.leftBumper().onTrue(intake.runOnce(() -> intake.set(Intake.Position.STOWED)));
+        driver.leftBumper().onTrue(intake.runOnce(() -> intake.set(Intake.Position.STOWED)));
 
         // intake
-       // driver.a().onTrue(intake.runOnce(() -> intake.set(Intake.Position.INTAKE)));
+        driver.a().onTrue(intake.runOnce(() -> intake.set(Intake.Position.INTAKE)));
 
         // agitate position
-        //driver.b().onTrue(intake.runOnce(() -> intake.set(Intake.Position.AGITATE)));
+        driver.b().onTrue(intake.runOnce(() -> intake.set(Intake.Position.AGITATE)));
 
         // homed (Extra stowed)
-        //driver.x().onTrue(intake.runOnce(() -> intake.set(Intake.Position.HOMED)));
+        driver.x().onTrue(intake.runOnce(() -> intake.set(Intake.Position.HOMED)));
     }
 
     private void configureManualDriveBindings() {
