@@ -60,9 +60,10 @@ public final class AutoRoutines {
     }
 
     public void configure() {
-        //autoChooser.addRoutine("Outpost and Depot", this::outpostAndDepotRoutine);
+        autoChooser.addRoutine("Outpost and Depot", this::outpostAndDepotRoutine);
+        autoChooser.addRoutine("Outpost Only", this::outpostOnlyRoutine);
         autoChooser.addRoutine("None", () -> autoFactory.newRoutine("None"));
-        //autoChooser.addRoutine("Shoot In Place", this::shootInPlace);
+        autoChooser.addRoutine("Shoot In Place", this::shootInPlace);
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
     }
@@ -80,7 +81,7 @@ public final class AutoRoutines {
             )
         );
 
-        startToOutpost.doneDelayed(1).onTrue(outpostToDepot.cmd());
+        startToOutpost.doneDelayed(5).onTrue(outpostToDepot.cmd());
 
         outpostToDepot.atTimeBeforeEnd(1).onTrue(intake.intakeCommand());
         outpostToDepot.doneDelayed(0.1).onTrue(depotToShootingPose.cmd());
@@ -96,6 +97,30 @@ public final class AutoRoutines {
             Commands.sequence(
                 subsystemCommands.aimAndShoot(2600)
                     .withTimeout(5)
+            )
+        );
+
+        return routine;
+    }
+
+    private AutoRoutine outpostOnlyRoutine() {
+        final AutoRoutine routine = autoFactory.newRoutine("Outpost Only");
+        final AutoTrajectory startToOutpost = OutpostAndDepotTrajectory$0.asAutoTraj(routine);
+
+        routine.active().onTrue(
+            Commands.sequence(
+                startToOutpost.resetOdometry(),
+                startToOutpost.cmd()
+            )
+        );
+
+        startToOutpost.doneDelayed(5).onTrue(
+            Commands.sequence(
+                Commands.parallel(
+                    shooter.spinUpCommand(2600),
+                    hood.positionCommand(0.32)
+                ),
+                subsystemCommands.aimAndShoot(2600).withTimeout(5)
             )
         );
 
