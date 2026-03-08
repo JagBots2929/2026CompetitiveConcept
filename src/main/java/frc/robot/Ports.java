@@ -8,13 +8,13 @@ public final class Ports {
     public static final CANBus kCANivoreCANBus = new CANBus("main");
 
     // Talon FX IDs
-    public static final int kIntakePivot = 10;
-    public static final int kIntakeRollers = 11;
-    public static final int kFloor = 12;
-    public static final int kFeeder = 13;
-    public static final int kShooterLeft = 14;
+    public static final int kIntakePivot = 15;
+    public static final int kIntakeRollers = 16;
+    public static final int kFloor = 17;
+    public static final int kFeeder = 18;
+    public static final int kShooterLeft = 19;
     // TODO this was removed for Bonney Lake competition // public static final int kShooterMiddle = 15;
-    public static final int kShooterRight = 16;
+    public static final int kShooterRight = 20;
     // TODO this doesn't exist for bonney lake // public static final int kHanger = 18;
 
     // PWM Ports // TODO don't have these yet for Bonney Lake

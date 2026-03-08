@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import choreo.Choreo.TrajectoryLogger;
@@ -36,17 +38,27 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
     private final PIDController pathYController = new PIDController(10, 0, 0);
     private final PIDController pathThetaController = new PIDController(7, 0, 0);
 
-    public Swerve() {
+    public Swerve(
+) {
         super(
-            TunerConstants.DrivetrainConstants, 
-            0,
-            VecBuilder.fill(0.1, 0.1, 0.1),
-            VecBuilder.fill(0.1, 0.1, 0.1),
-            TunerConstants.FrontLeft, 
-            TunerConstants.FrontRight, 
-            TunerConstants.BackLeft, 
-            TunerConstants.BackRight
-        );
+                TunerConstants.DrivetrainConstants,
+                0,
+                VecBuilder.fill(0.1, 0.1, 0.1),
+                VecBuilder.fill(0.1, 0.1, 0.1),
+                TunerConstants.FrontLeft,
+                TunerConstants.FrontRight,
+                TunerConstants.BackLeft,
+                TunerConstants.BackRight);
+                
+
+    }
+
+    public void zero() {
+        this.tareEverything();
+    }
+
+    public Command zeroCommand() {
+        return this.runOnce(() -> zero());
     }
 
     /**
@@ -55,7 +67,8 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
      * @return AutoFactory for this drivetrain
      */
     public AutoFactory createAutoFactory() {
-        return createAutoFactory((sample, isStart) -> {});
+        return createAutoFactory((sample, isStart) -> {
+        });
     }
 
     /**
@@ -67,17 +80,17 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
      */
     public AutoFactory createAutoFactory(TrajectoryLogger<SwerveSample> trajLogger) {
         return new AutoFactory(
-            () -> getState().Pose,
-            this::resetPose,
-            this::followPath,
-            true,
-            this,
-            trajLogger
-        );
+                () -> getState().Pose,
+                this::resetPose,
+                this::followPath,
+                true,
+                this,
+                trajLogger);
     }
 
     /**
-     * Returns a command that applies the specified control request to this swerve drivetrain.
+     * Returns a command that applies the specified control request to this swerve
+     * drivetrain.
      *
      * @param request Function returning the request to apply
      * @return Command to run
@@ -98,38 +111,37 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
 
         var targetSpeeds = sample.getChassisSpeeds();
         targetSpeeds.vxMetersPerSecond += pathXController.calculate(
-            pose.getX(), sample.x
-        );
+                pose.getX(), sample.x);
         targetSpeeds.vyMetersPerSecond += pathYController.calculate(
-            pose.getY(), sample.y
-        );
+                pose.getY(), sample.y);
         targetSpeeds.omegaRadiansPerSecond += pathThetaController.calculate(
-            pose.getRotation().getRadians(), sample.heading
-        );
+                pose.getRotation().getRadians(), sample.heading);
 
         setControl(
-            pathFieldSpeedsRequest.withSpeeds(targetSpeeds)
-                .withWheelForceFeedforwardsX(sample.moduleForcesX())
-                .withWheelForceFeedforwardsY(sample.moduleForcesY())
-        );
+                pathFieldSpeedsRequest.withSpeeds(targetSpeeds)
+                        .withWheelForceFeedforwardsX(sample.moduleForcesX())
+                        .withWheelForceFeedforwardsY(sample.moduleForcesY()));
     }
 
     @Override
     public void periodic() {
         /*
          * Periodically try to apply the operator perspective.
-         * If we haven't applied the operator perspective before, then we should apply it regardless of DS state.
-         * This allows us to correct the perspective in case the robot code restarts mid-match.
-         * Otherwise, only check and apply the operator perspective if the DS is disabled.
-         * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
+         * If we haven't applied the operator perspective before, then we should apply
+         * it regardless of DS state.
+         * This allows us to correct the perspective in case the robot code restarts
+         * mid-match.
+         * Otherwise, only check and apply the operator perspective if the DS is
+         * disabled.
+         * This ensures driving behavior doesn't change until an explicit disable event
+         * occurs during testing.
          */
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 setOperatorPerspectiveForward(
-                    allianceColor == Alliance.Red
-                        ? kRedAlliancePerspectiveRotation
-                        : kBlueAlliancePerspectiveRotation
-                );
+                        allianceColor == Alliance.Red
+                                ? kRedAlliancePerspectiveRotation
+                                : kBlueAlliancePerspectiveRotation);
                 if (!m_hasAppliedOperatorPerspective) {
                     seedFieldCentric();
                 }
@@ -139,11 +151,14 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
     }
 
     /**
-     * Adds a vision measurement to the Kalman Filter. This will correct the odometry pose estimate
+     * Adds a vision measurement to the Kalman Filter. This will correct the
+     * odometry pose estimate
      * while still accounting for measurement noise.
      *
-     * @param visionRobotPoseMeters The pose of the robot as measured by the vision camera.
-     * @param timestampSeconds The timestamp of the vision measurement in seconds.
+     * @param visionRobotPoseMeters The pose of the robot as measured by the vision
+     *                              camera.
+     * @param timestampSeconds      The timestamp of the vision measurement in
+     *                              seconds.
      */
     @Override
     public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
@@ -151,24 +166,29 @@ public class Swerve extends TunerSwerveDrivetrain implements Subsystem {
     }
 
     /**
-     * Adds a vision measurement to the Kalman Filter. This will correct the odometry pose estimate
+     * Adds a vision measurement to the Kalman Filter. This will correct the
+     * odometry pose estimate
      * while still accounting for measurement noise.
      * <p>
      * Note that the vision measurement standard deviations passed into this method
      * will continue to apply to future measurements until a subsequent call to
      * {@link #setVisionMeasurementStdDevs(Matrix)} or this method.
      *
-     * @param visionRobotPoseMeters The pose of the robot as measured by the vision camera.
-     * @param timestampSeconds The timestamp of the vision measurement in seconds.
-     * @param visionMeasurementStdDevs Standard deviations of the vision pose measurement
-     *     in the form [x, y, theta]ᵀ, with units in meters and radians.
+     * @param visionRobotPoseMeters    The pose of the robot as measured by the
+     *                                 vision camera.
+     * @param timestampSeconds         The timestamp of the vision measurement in
+     *                                 seconds.
+     * @param visionMeasurementStdDevs Standard deviations of the vision pose
+     *                                 measurement
+     *                                 in the form [x, y, theta]ᵀ, with units in
+     *                                 meters and radians.
      */
     @Override
     public void addVisionMeasurement(
-        Pose2d visionRobotPoseMeters,
-        double timestampSeconds,
-        Matrix<N3, N1> visionMeasurementStdDevs
-    ) {
-        super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
+            Pose2d visionRobotPoseMeters,
+            double timestampSeconds,
+            Matrix<N3, N1> visionMeasurementStdDevs) {
+        super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds),
+                visionMeasurementStdDevs);
     }
 }
