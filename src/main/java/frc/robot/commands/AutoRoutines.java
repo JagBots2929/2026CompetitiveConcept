@@ -60,9 +60,9 @@ public final class AutoRoutines {
     }
 
     public void configure() {
-        autoChooser.addRoutine("Outpost and Depot", this::outpostAndDepotRoutine);
+        //autoChooser.addRoutine("Outpost and Depot", this::outpostAndDepotRoutine);
         autoChooser.addRoutine("None", () -> autoFactory.newRoutine("None"));
-        autoChooser.addRoutine("Shoot In Place", this::shootInPlace);
+        //autoChooser.addRoutine("Shoot In Place", this::shootInPlace);
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
     }
